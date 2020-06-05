@@ -45,17 +45,15 @@ async function runTests(name: string, url: string) {
 
       return reducedAudit.evaluate().then( (outcomes: Iterable<Outcome<Page, any, any>>) => {
 
-        // getting 'inapplicable' for every outcome
-        for (const outcome of outcomes) {
+        // for (const outcome of outcomes) {
+        //   console.log('outcome', outcome.toJSON());
+        // }
 
-          console.log('outcome', outcome.toJSON());
+        const json = [...outcomes].filter(outcome => {
+          return Outcome.isFailed(outcome);
+        }).map( o => o.toJSON());
 
-        }
-
-        // const json = [...outcomes].map(outcome => {
-        //   return Outcome.isApplicable(outcome) ? outcome.toJSON() : null;
-        // });
-        // console.log('JSON', json);
+        console.log('Failed', json);
 
         return outcomes;
       });
